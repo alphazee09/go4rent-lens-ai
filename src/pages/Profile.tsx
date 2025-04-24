@@ -3,15 +3,17 @@ import React from 'react';
 import { User, Settings, LogOut, Package, Clock, ChevronRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const { toast } = useToast();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    toast({
-      title: "Logged Out",
-      description: "You have been successfully logged out.",
-    });
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/auth/login');
   };
 
   // Mock rental history data
@@ -41,8 +43,8 @@ const Profile = () => {
             <User size={28} className="text-go4rent-turquoise" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold">John Doe</h1>
-            <p className="text-gray-400">john.doe@example.com</p>
+            <h1 className="text-xl font-semibold">{user?.email || 'User'}</h1>
+            <p className="text-gray-400">{user?.email}</p>
           </div>
         </div>
       </div>

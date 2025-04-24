@@ -2,9 +2,11 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Camera, User, Search } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar: React.FC = () => {
   const location = useLocation();
+  const { user } = useAuth();
   
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -27,9 +29,12 @@ const Navbar: React.FC = () => {
           </div>
           <span className="text-xs mt-1 text-go4rent-turquoise">Scan</span>
         </Link>
-        <Link to="/profile" className={`flex flex-col items-center py-2 px-5 ${isActive('/profile') ? 'text-go4rent-turquoise' : 'text-gray-400'}`}>
+        <Link 
+          to={user ? "/profile" : "/auth/login"} 
+          className={`flex flex-col items-center py-2 px-5 ${isActive('/profile') || isActive('/auth/login') ? 'text-go4rent-turquoise' : 'text-gray-400'}`}
+        >
           <User size={24} />
-          <span className="text-xs mt-1">Profile</span>
+          <span className="text-xs mt-1">{user ? "Profile" : "Login"}</span>
         </Link>
       </div>
     </div>
