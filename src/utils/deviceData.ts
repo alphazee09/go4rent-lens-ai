@@ -1,4 +1,3 @@
-
 export const categories = [
   {
     id: 'cameras',
@@ -73,7 +72,44 @@ export const devices = [
       megapixels: 45,
       sensor: 'Full-Frame CMOS',
       videoResolution: '8K RAW',
-      description: 'Professional full-frame mirrorless camera perfect for photography and videography.'
+      description: 'Professional full-frame mirrorless camera perfect for photography and videography.',
+      benefits: [
+        'Exceptional image quality with 45MP sensor',
+        '8K RAW video recording capability',
+        'Advanced autofocus with animal detection',
+        'In-body image stabilization up to 8 stops'
+      ],
+      uses: [
+        'Professional Photography',
+        'Landscape',
+        'Portrait',
+        'Wildlife',
+        'Sports',
+        'Event Photography'
+      ],
+      compatibleAccessories: [
+        {
+          id: 'canon-rf-24-70mm',
+          name: 'Canon RF 24-70mm f/2.8L',
+          price: 80.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1617004884534-bdc511bf159f'
+        },
+        {
+          id: 'canon-battery-grip',
+          name: 'Canon BG-R10 Battery Grip',
+          price: 25.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1584479898061-15742a14c650'
+        },
+        {
+          id: 'sandisk-cfexpress',
+          name: 'SanDisk CFexpress Type B',
+          price: 15.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1590845947376-2638caa89309'
+        }
+      ]
     }
   },
   {
@@ -89,7 +125,35 @@ export const devices = [
       megapixels: 33,
       sensor: 'Full-Frame BSI CMOS',
       videoResolution: '4K 60fps',
-      description: 'Versatile full-frame camera with excellent stills and video performance.'
+      description: 'Versatile full-frame camera with excellent stills and video performance.',
+      benefits: [
+        '33MP full-frame sensor',
+        'Improved color science',
+        'Real-time tracking autofocus',
+        'Up to 10fps continuous shooting'
+      ],
+      uses: [
+        'Hybrid Photo/Video',
+        'Content Creation',
+        'Studio Photography',
+        'Street Photography'
+      ],
+      compatibleAccessories: [
+        {
+          id: 'sony-24-70mm-gm',
+          name: 'Sony 24-70mm f/2.8 GM',
+          price: 75.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1595619868239-5670a72515ad'
+        },
+        {
+          id: 'sony-battery-grip',
+          name: 'Sony VG-C4EM Battery Grip',
+          price: 22.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1584479898061-15742a14c650'
+        }
+      ]
     }
   },
   {
@@ -102,9 +166,39 @@ export const devices = [
     rating: 4.9,
     details: {
       type: 'Standard Zoom Lens',
-      mountCompatibility: ['Sony E', 'Leica L'],
+      mountCompatibility: 'Sony E, Leica L',
       aperture: 'f/2.8',
-      description: 'Professional-grade standard zoom lens with exceptional image quality.'
+      filterSize: '82mm',
+      weight: '830g',
+      description: 'Professional-grade standard zoom lens with exceptional image quality.',
+      benefits: [
+        'Outstanding optical performance',
+        'Fast constant f/2.8 aperture',
+        'Weather-sealed construction',
+        'Lightweight design'
+      ],
+      uses: [
+        'Event Photography',
+        'Portrait Photography',
+        'Landscape Photography',
+        'Documentary'
+      ],
+      compatibleAccessories: [
+        {
+          id: 'lens-hood',
+          name: 'Sigma Lens Hood',
+          price: 10.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1615417788827-5e395c28ade8'
+        },
+        {
+          id: 'polarizing-filter',
+          name: '82mm Circular Polarizer',
+          price: 15.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1524065783975-a726c68948bd'
+        }
+      ]
     }
   },
   {
@@ -151,7 +245,35 @@ export const devices = [
       megapixels: 12,
       sensor: 'Full-Frame BSI CMOS',
       videoResolution: '4K 120fps',
-      description: 'Low-light specialist with incredible video capabilities.'
+      description: 'Low-light specialist with incredible video capabilities.',
+      benefits: [
+        '12MP full-frame sensor',
+        'Improved color science',
+        'Real-time tracking autofocus',
+        'Up to 10fps continuous shooting'
+      ],
+      uses: [
+        'Hybrid Photo/Video',
+        'Content Creation',
+        'Studio Photography',
+        'Street Photography'
+      ],
+      compatibleAccessories: [
+        {
+          id: 'sony-24-70mm-gm',
+          name: 'Sony 24-70mm f/2.8 GM',
+          price: 75.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1595619868239-5670a72515ad'
+        },
+        {
+          id: 'sony-battery-grip',
+          name: 'Sony VG-C4EM Battery Grip',
+          price: 22.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1584479898061-15742a14c650'
+        }
+      ]
     }
   },
   {
@@ -166,7 +288,42 @@ export const devices = [
       type: 'Portrait Lens',
       mountCompatibility: ['Canon RF'],
       aperture: 'f/1.2',
-      description: 'Premium portrait lens with stunning bokeh and sharpness.'
+      description: 'Premium portrait lens with stunning bokeh and sharpness.',
+      benefits: [
+        '1.2 aperture',
+        'Stunning bokeh',
+        'Sharp focus',
+        'In-body image stabilization'
+      ],
+      uses: [
+        'Portrait Photography',
+        'Landscape Photography',
+        'Wildlife',
+        'Sports'
+      ],
+      compatibleAccessories: [
+        {
+          id: 'canon-rf-24-70mm',
+          name: 'Canon RF 24-70mm f/2.8L',
+          price: 80.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1617004884534-bdc511bf159f'
+        },
+        {
+          id: 'canon-battery-grip',
+          name: 'Canon BG-R10 Battery Grip',
+          price: 25.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1584479898061-15742a14c650'
+        },
+        {
+          id: 'sandisk-cfexpress',
+          name: 'SanDisk CFexpress Type B',
+          price: 15.00,
+          currency: 'OMR',
+          image: 'https://images.unsplash.com/photo-1590845947376-2638caa89309'
+        }
+      ]
     }
   },
   {
@@ -312,15 +469,25 @@ export const devices = [
   }
 ];
 
-// New utility functions to fix build errors
-
 export const getDeviceById = (id: string) => {
-  return devices.find(device => device.id === id);
+  const device = devices.find(device => device.id === id);
+  
+  if (device) {
+    if (!device.details.benefits) {
+      device.details.benefits = [];
+    }
+    if (!device.details.uses) {
+      device.details.uses = [];
+    }
+    if (!device.details.compatibleAccessories) {
+      device.details.compatibleAccessories = [];
+    }
+  }
+  
+  return device;
 };
 
 export const findDeviceByBarcode = (barcode: string) => {
-  // In a real app, this would search a database of barcodes
-  // For now, we'll simulate finding a device by treating the barcode as an ID
   return devices.find(device => device.id === barcode);
 };
 
@@ -334,8 +501,6 @@ export const getRecommendedAccessories = (deviceId: string) => {
   const device = getDeviceById(deviceId);
   if (!device) return [];
   
-  // Logic to recommend accessories based on device type
-  // This is a simple implementation - in a real app, this would be more sophisticated
   switch(device.category) {
     case 'Cameras':
       return devices.filter(d => d.category === 'Lenses' || d.category === 'Audio' || d.category === 'Tripods').slice(0, 3);

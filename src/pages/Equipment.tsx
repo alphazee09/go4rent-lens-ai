@@ -77,7 +77,7 @@ const Equipment = () => {
         </div>
         
         <div className="mt-4">
-          <p className="text-gray-300">{device.description}</p>
+          <p className="text-gray-300">{device.details.description}</p>
         </div>
         
         {/* Rental Period Selection */}
@@ -140,10 +140,10 @@ const Equipment = () => {
           <div className="mt-4">
             {activeTab === 'specs' && (
               <div className="space-y-3">
-                {Object.entries(device.specifications).map(([key, value], index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <span className="text-gray-400 capitalize">{key.replace('_', ' ')}</span>
-                    <span className="font-medium">{value}</span>
+                {Object.entries(device.details).filter(([key]) => key !== 'description').map(([key, value]) => (
+                  <div key={key} className="flex items-center justify-between">
+                    <span className="text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                    <span className="font-medium">{String(value)}</span>
                   </div>
                 ))}
               </div>
@@ -151,23 +151,35 @@ const Equipment = () => {
             
             {activeTab === 'benefits' && (
               <div className="space-y-3">
-                {device.benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-center">
-                    <CheckCircle size={16} className="text-go4rent-turquoise mr-2 flex-shrink-0" />
-                    <span className="text-gray-300">{benefit}</span>
-                  </div>
-                ))}
+                {device.details.benefits ? (
+                  Array.isArray(device.details.benefits) ? 
+                    device.details.benefits.map((benefit, index) => (
+                      <div key={index} className="flex items-center">
+                        <CheckCircle size={16} className="text-go4rent-turquoise mr-2 flex-shrink-0" />
+                        <span className="text-gray-300">{benefit}</span>
+                      </div>
+                    ))
+                  : <p className="text-gray-300">No benefits information available</p>
+                ) : (
+                  <p className="text-gray-300">No benefits information available</p>
+                )}
               </div>
             )}
             
             {activeTab === 'uses' && (
               <div className="grid grid-cols-2 gap-3">
-                {device.photographyTypes.map((type, index) => (
-                  <div key={index} className="glass-effect p-3 rounded-lg">
-                    <Camera size={16} className="text-go4rent-turquoise mb-2" />
-                    <span className="text-sm text-gray-300">{type}</span>
-                  </div>
-                ))}
+                {device.details.uses ? (
+                  Array.isArray(device.details.uses) ?
+                    device.details.uses.map((use, index) => (
+                      <div key={index} className="glass-effect p-3 rounded-lg">
+                        <Camera size={16} className="text-go4rent-turquoise mb-2" />
+                        <span className="text-sm text-gray-300">{use}</span>
+                      </div>
+                    ))
+                  : <p className="text-gray-300">No uses information available</p>
+                ) : (
+                  <p className="text-gray-300">No uses information available</p>
+                )}
               </div>
             )}
           </div>
@@ -187,22 +199,26 @@ const Equipment = () => {
           
           <div className="overflow-x-auto pb-2">
             <div className="flex space-x-3" style={{minWidth: "max-content"}}>
-              {device.accessories.map((accessory) => (
-                <div key={accessory.id} className="glass-effect rounded-lg w-40 flex-shrink-0">
-                  <img 
-                    src={accessory.image}
-                    alt={accessory.name}
-                    className="w-full h-24 object-cover rounded-t-lg"
-                  />
-                  <div className="p-2">
-                    <h4 className="text-sm font-medium truncate">{accessory.name}</h4>
-                    <p className="text-xs text-gray-400">Compatible</p>
-                    <p className="text-go4rent-turquoise text-sm font-medium mt-1">
-                      {accessory.currency} {accessory.price.toFixed(2)}/day
-                    </p>
+              {device.details.compatibleAccessories ? 
+                device.details.compatibleAccessories.map((accessory) => (
+                  <div key={accessory.id} className="glass-effect rounded-lg w-40 flex-shrink-0">
+                    <img 
+                      src={accessory.image}
+                      alt={accessory.name}
+                      className="w-full h-24 object-cover rounded-t-lg"
+                    />
+                    <div className="p-2">
+                      <h4 className="text-sm font-medium truncate">{accessory.name}</h4>
+                      <p className="text-xs text-gray-400">Compatible</p>
+                      <p className="text-go4rent-turquoise text-sm font-medium mt-1">
+                        {accessory.currency} {accessory.price.toFixed(2)}/day
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )) : (
+                  <div className="text-gray-400">No compatible accessories found</div>
+                )
+              }
             </div>
           </div>
         </div>
