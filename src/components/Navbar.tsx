@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Camera, User, Search } from 'lucide-react';
+import { Home, FileText, User, Search } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar: React.FC = () => {
@@ -23,11 +23,11 @@ const Navbar: React.FC = () => {
           <Search size={24} />
           <span className="text-xs mt-1">Search</span>
         </Link>
-        <Link to="/scanner" className="flex flex-col items-center">
+        <Link to="/contracts" className="flex flex-col items-center">
           <div className="bg-go4rent-turquoise rounded-full p-3 -mt-8 shadow-lg">
-            <Camera size={24} className="text-go4rent-dark" />
+            <FileText size={24} className="text-go4rent-dark" />
           </div>
-          <span className="text-xs mt-1 text-go4rent-turquoise">Scan</span>
+          <span className="text-xs mt-1 text-go4rent-turquoise">Contracts</span>
         </Link>
         <Link 
           to={user ? "/profile" : "/auth/login"} 

@@ -122,7 +122,7 @@ const Index = () => {
         </div>
         
         <div className="grid grid-cols-1 gap-4">
-          {devices.slice(0, 4).map((device) => (
+          {devices.slice(0, 8).map((device) => (
             <EquipmentCard 
               key={device.id}
               id={device.id}

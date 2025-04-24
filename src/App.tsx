@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Equipment from "./pages/Equipment";
-import Scanner from "./pages/Scanner";
+import Contracts from "./pages/Contracts";
 import Profile from "./pages/Profile";
 import Search from "./pages/Search";
 import Login from "./pages/auth/Login";
@@ -40,9 +40,9 @@ const App = () => (
                 <Equipment />
               </ProtectedRoute>
             } />
-            <Route path="/scanner" element={
+            <Route path="/contracts" element={
               <ProtectedRoute>
-                <Scanner />
+                <Contracts />
               </ProtectedRoute>
             } />
             <Route path="/profile" element={

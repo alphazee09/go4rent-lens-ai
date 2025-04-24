@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Brain, X } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Brain, X, Camera, Upload, Loader } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface AIRecommendationProps {
@@ -11,12 +11,23 @@ const AIRecommendation: React.FC<AIRecommendationProps> = ({ onRecommendation })
   const [isOpen, setIsOpen] = useState(false);
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
+  const [showCamera, setShowCamera] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!question.trim()) return;
+    if (!question.trim() && !image) {
+      toast({
+        title: "Input Required",
+        description: "Please describe your needs or upload an image",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsLoading(true);
     
@@ -50,12 +61,22 @@ const AIRecommendation: React.FC<AIRecommendationProps> = ({ onRecommendation })
           price: 65,
           currency: 'OMR',
           rating: 4.7
+        },
+        {
+          id: 'canon-c70',
+          name: 'Canon C70',
+          category: 'Cinema Camera',
+          image: 'https://images.unsplash.com/photo-1599631438183-bac2f789f2a7',
+          price: 80,
+          currency: 'OMR',
+          rating: 4.6
         }
       ];
       
       onRecommendation(mockRecommendations);
       setIsLoading(false);
       setQuestion('');
+      setImage(null);
       setIsOpen(false);
       
       toast({
@@ -63,6 +84,71 @@ const AIRecommendation: React.FC<AIRecommendationProps> = ({ onRecommendation })
         description: "We've found some perfect equipment for your needs.",
       });
     }, 2000);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: 'environment' } 
+      });
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setShowCamera(true);
+      }
+    } catch (error) {
+      toast({
+        title: "Camera Error",
+        description: "Unable to access your camera. Please check permissions.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const captureImage = () => {
+    if (videoRef.current) {
+      const canvas = document.createElement('canvas');
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      
+      const context = canvas.getContext('2d');
+      if (context) {
+        context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+        const imageData = canvas.toDataURL('image/jpeg');
+        setImage(imageData);
+        stopCamera();
+      }
+    }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
+      tracks.forEach(track => track.stop());
+      setShowCamera(false);
+    }
+  };
+
+  const resetImage = () => {
+    setImage(null);
+    if (showCamera) {
+      stopCamera();
+    }
   };
 
   return (
@@ -83,7 +169,10 @@ const AIRecommendation: React.FC<AIRecommendationProps> = ({ onRecommendation })
                 <h3 className="font-medium text-white">AI Equipment Advisor</h3>
               </div>
               <button 
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                  resetImage();
+                }}
                 className="text-gray-400 hover:text-white"
               >
                 <X size={20} />
@@ -92,10 +181,69 @@ const AIRecommendation: React.FC<AIRecommendationProps> = ({ onRecommendation })
             
             <div className="p-4">
               <p className="text-sm text-gray-300 mb-4">
-                Describe what you want to shoot, your experience level, or any specific requirements, and I'll recommend the best equipment for your needs.
+                Describe what you want to shoot, your experience level, or upload an image of equipment similar to what you need.
               </p>
               
               <form onSubmit={handleSubmit}>
+                {showCamera ? (
+                  <div className="relative w-full rounded-lg overflow-hidden mb-3 bg-secondary aspect-video">
+                    <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
+                    <div className="absolute bottom-2 left-0 right-0 flex justify-center space-x-3">
+                      <button 
+                        type="button"
+                        onClick={stopCamera}
+                        className="p-2 rounded-full bg-gray-800/70"
+                      >
+                        <X size={20} className="text-white" />
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={captureImage}
+                        className="p-2 rounded-full bg-white"
+                      >
+                        <div className="w-6 h-6 rounded-full border-2 border-go4rent-turquoise"></div>
+                      </button>
+                    </div>
+                  </div>
+                ) : image ? (
+                  <div className="relative rounded-lg overflow-hidden mb-3">
+                    <img src={image} alt="Uploaded" className="w-full object-cover rounded-lg" />
+                    <button 
+                      type="button"
+                      onClick={resetImage}
+                      className="absolute top-2 right-2 p-1 rounded-full bg-gray-800/70"
+                    >
+                      <X size={16} className="text-white" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex space-x-2 mb-3">
+                    <button 
+                      type="button"
+                      onClick={startCamera}
+                      className="flex-1 p-2 bg-secondary hover:bg-secondary/80 rounded-lg flex items-center justify-center"
+                    >
+                      <Camera size={18} className="mr-2 text-go4rent-turquoise" />
+                      <span>Take Photo</span>
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={triggerFileInput}
+                      className="flex-1 p-2 bg-secondary hover:bg-secondary/80 rounded-lg flex items-center justify-center"
+                    >
+                      <Upload size={18} className="mr-2 text-go4rent-turquoise" />
+                      <span>Upload Image</span>
+                    </button>
+                    <input 
+                      type="file" 
+                      ref={fileInputRef}
+                      onChange={handleFileUpload}
+                      accept="image/*"
+                      className="hidden"
+                    />
+                  </div>
+                )}
+                
                 <textarea 
                   className="w-full p-3 rounded-lg bg-secondary border border-gray-700 text-white resize-none focus:outline-none focus:ring-1 focus:ring-go4rent-turquoise"
                   placeholder="e.g., I need to shoot a wedding in low light conditions..."
@@ -111,10 +259,7 @@ const AIRecommendation: React.FC<AIRecommendationProps> = ({ onRecommendation })
                 >
                   {isLoading ? (
                     <span className="flex items-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-go4rent-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
+                      <Loader size={16} className="animate-spin mr-2 text-go4rent-dark" />
                       Processing...
                     </span>
                   ) : (
